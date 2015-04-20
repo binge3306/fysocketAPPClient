@@ -1,4 +1,4 @@
-package fy.socket.SocketAPPClient.server;
+package fy.socket.SocketAPPClient.service;
 
 import java.io.IOException;
 import java.net.URI;

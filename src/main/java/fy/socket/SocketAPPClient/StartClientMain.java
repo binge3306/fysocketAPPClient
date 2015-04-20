@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
 import fy.socket.SocketAPPClient.exception.*;
-import fy.socket.SocketAPPClient.server.*;
+import fy.socket.SocketAPPClient.service.*;
 
 
 public class StartClientMain {
