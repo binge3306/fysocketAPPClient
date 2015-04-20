@@ -66,11 +66,12 @@ public class APPClient extends APPClientAbs{
 		String msgSend = msg;
 		while(times >= 0){
 			times --;
-			msgSend += " = "+times;
+			msgSend += " ，sendtimes= "+times;
 			
 			try {
 				sendMsgText(ByteBufferSwap.stringToBytebuffer(msgSend), 0);
-				TimeUnit.SECONDS.sleep(timeout);
+				if(timeout>0)
+					TimeUnit.SECONDS.sleep(timeout);
 			} catch (IllegalWebsocketException  e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {

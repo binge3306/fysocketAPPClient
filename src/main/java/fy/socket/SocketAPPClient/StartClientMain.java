@@ -21,7 +21,19 @@ public class StartClientMain {
 			client.virify("user3", "verify3","homewtb");
 			TimeUnit.SECONDS.sleep(10);
 			client.sendMsg(null,100,20);
-		} catch (ConnectWebsocketException | IOException | URISyntaxException | HandshakeWebsocketException | InterruptedException e) {
+		} catch (ConnectWebsocketException   e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (HandshakeWebsocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
