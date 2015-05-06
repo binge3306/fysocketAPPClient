@@ -4,7 +4,7 @@
 
 	<groupId>com.fy.socket</groupId>
 	<artifactId>fysocketAPPClient</artifactId>
-	<version>1.0.1</version>
+	<version>2.0.1</version><!-- 符合netty 从2.*开始 -->
 	<packaging>jar</packaging>
 
 	<name>SocketAPPClient</name>
@@ -35,6 +35,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.2</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.0.26.Final</version>
 		</dependency>
 	</dependencies>
 </project>
