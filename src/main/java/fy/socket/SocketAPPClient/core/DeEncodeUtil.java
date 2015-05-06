@@ -55,11 +55,11 @@ public class DeEncodeUtil {
 
 	/**
 	 * 
-	 * 编码实现
+	 * 客户端编码
 	 * <br>
-	 * 该方法还存在问题
-	 * 掩码部分没有添加
-	 * 消息内容没有被掩码处理
+	 * 将消息内容打包成符合websocket格式
+	 * <br>
+	 * 内容包括消息头和掩码处理
 	 * @param byteBuf	待译码部分
 	 * @param finalFragment	是否为最后一个片段
 	 * @return

@@ -31,6 +31,8 @@ public class StartClientMain {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (IllegalWebsocketException e) {
+			e.printStackTrace();
 		}
 		
 	}

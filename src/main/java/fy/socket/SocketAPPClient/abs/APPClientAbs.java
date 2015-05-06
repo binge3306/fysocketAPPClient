@@ -37,7 +37,7 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 	 * The URI this channel is supposed to connect to.
 	 */
 	protected URI uri = null;
-	private int connectTimeout = 0;
+	private int connectTimeout = 1000;
 	private Socket socket = null;
 
 	private InputStream istream;
@@ -112,9 +112,9 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 
 
 	@Override
-	public  void connection() {
+	public  void connection() throws IllegalWebsocketException {
 		if( writeIOThread != null )
-			throw new IllegalStateException( "WebSocketClient objects are not reuseable" );
+			throw new IllegalWebsocketException( "WebSocketClient objects are not reuseable" );
 		writeIOThread = new Thread( this );
 		// 启动client线程
 		writeIOThread.start();
@@ -172,7 +172,7 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 
 	@Override
 	public void run() {
-		
+		logger.log(Level.INFO,"执行创建socket的run方法");
 		try {
 			if( socket == null ) {
 				socket = new Socket( proxy );
@@ -493,20 +493,16 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 				logger.log(Level.INFO,"写IO线程启动");
 				ByteBuffer buffer = coreClient.sendMsgQueue.get();
 				if(!handshakeStatus){
-					encodeFine(buffer);
+					encodeFine1(buffer);
 				}else{
 					new DeEncodeUtil(this).encodeWebsocket(buffer);
 				}
-				
-
 			}
-			
 		}
 		
 		
 		@Override
 		public void decodeFine(ByteBuffer websocketMsg)   {
-			
 			
 		}
 
@@ -514,8 +510,9 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 		@Override
 		public void encodeFine(ByteBuffer websocketMsg)  {
 			try {
-				logger.log(Level.INFO,"写消息到IO通道"+websocketMsg.capacity());
+				logger.log(Level.INFO,"写--消息 "+ websocketMsg.capacity()  +" 到IO通道");
 				ostream.write( websocketMsg.array(), 0, websocketMsg.limit() );
+				ostream.write("/r/n".getBytes());
 				ostream.flush();
 			} catch (IOException e) {
 				logger.log(Level.WARNING,"客户端发送消息异常");
@@ -523,6 +520,16 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 			}
 		}
 		
+		public void encodeFine1(ByteBuffer websocketMsg)  {
+			try {
+				logger.log(Level.INFO,"写消息 "+ByteBufferSwap.byteBufferToString(websocketMsg)  +" 到IO通道");
+				ostream.write( websocketMsg.array(), 0, websocketMsg.limit() );
+				ostream.flush();
+			} catch (IOException e) {
+				logger.log(Level.WARNING,"客户端发送消息异常");
+				onWebsocketError(e, "客户端发送消息异常");
+			}
+		}
 	}
 
 

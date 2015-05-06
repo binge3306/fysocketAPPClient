@@ -14,6 +14,9 @@ public class CommonWebsocketException extends Exception {
 		
 	}
 	
+	public CommonWebsocketException(String errorMsg){
+		
+	}
 	
 	public CommonWebsocketException(Integer errorCode,String errorMsg){
 		this.errorCode = errorCode;

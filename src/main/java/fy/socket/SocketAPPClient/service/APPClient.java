@@ -40,14 +40,12 @@ public class APPClient extends APPClientAbs{
 
 	@Override
 	public void onError(Exception e, String info) {
-		logger.log(Level.INFO, "接收过程发生错误 :"+info);
-		
+		logger.log(Level.INFO, "异常:"+info+" ."+e);
 	}
 
 	@Override
 	public void onClose(Exception e, String info) {
-		logger.log(Level.INFO, "通道关闭 ="+info);
-		
+		logger.log(Level.INFO, "通道关闭 ="+info+"  ."+e);
 	}
 	/**
 	 * 添加的测试方法
@@ -64,22 +62,23 @@ public class APPClient extends APPClientAbs{
 			msg = "20840##0##appclient msg";
 		}
 		String msgSend = msg;
-		while(times >= 0){
-			times --;
+//		while(times >= 0){
+//			times --;
 			msgSend += " ，sendtimes= "+times;
 			
 			try {
+				logger.log(Level.INFO, "sendMsgText 调用 sendMsgText 方法,将消息插入待发送队列");
 				sendMsgText(ByteBufferSwap.stringToBytebuffer(msgSend), 0);
-				if(timeout>0)
-					TimeUnit.SECONDS.sleep(timeout);
+//				if(timeout>0)
+//					TimeUnit.SECONDS.sleep(timeout);
 			} catch (IllegalWebsocketException  e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.log(Level.WARNING, "IllegalWebsocketException 异常"+"  ."+e);
 			}
-			msgSend = msg;
-		}
+//			} catch (InterruptedException e) {
+//				logger.log(Level.WARNING, "InterruptedException 异常"+"  ."+e);
+//			}
+//			msgSend = msg;
+//		}
 	}
 	
 

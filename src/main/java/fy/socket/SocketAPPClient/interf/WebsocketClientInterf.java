@@ -19,7 +19,7 @@ public interface WebsocketClientInterf {
 	 * <br>
 	 * 在风控完成之后，用户验证已经交给风控处理，则可以直接连接
 	 */
-	public void connection();
+	public void connection() throws IllegalWebsocketException;
 	
 	/**
 	 * 验证用户
