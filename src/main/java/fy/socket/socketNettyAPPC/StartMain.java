@@ -12,7 +12,6 @@ public class StartMain {
 
 	public static void main(String[] args) {
 
-
 		//new URI("ws://localhost:8887")
 		try {
 			APPClient client = new APPClient("localhost", 8877);
