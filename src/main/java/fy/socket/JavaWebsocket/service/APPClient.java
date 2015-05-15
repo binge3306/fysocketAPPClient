@@ -58,7 +58,7 @@ public class APPClient extends APPClientAbs{
 		//ByteBuffer msgb = ByteBuffer.allocate(10);
 		if(msg == null||msg == ""){
 			// chatId##isPublice##msgContent
-			msg = "20840##0##appclient msg";
+			msg = "chatroom1##0##appclient msg";
 		}
 		String msgSend = msg;
 //		while(times >= 0){

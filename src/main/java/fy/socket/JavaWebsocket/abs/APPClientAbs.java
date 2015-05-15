@@ -199,12 +199,12 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 	 */
 	@Override
 	public void onVirify(String msg, boolean pass){
-		
+		logger.log(Level.INFO,"服务器放回验证信息"+ msg);
 		if("ok".equals(msg)){
 			verifyStatus = true;
-			logger.log(Level.INFO,"握手成功");
+			logger.log(Level.INFO,"验证成功");
 		}else{
-			logger.log(Level.INFO,"握手bu成功");
+			logger.log(Level.INFO,"验证bu成功");
 		}
 		
 	}

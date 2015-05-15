@@ -17,7 +17,7 @@ public class StartClientMain {
 
 		//new URI("ws://localhost:8887")
 		try {
-			APPClient client = new APPClient("localhost", 8877);
+			APPClient client = new APPClient("222.201.139.159", 8877);
 			client.connection();
 			TimeUnit.SECONDS.sleep(5);
 			client.virify("user3", "verify3","homewtb");
