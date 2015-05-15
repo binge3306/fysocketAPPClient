@@ -34,20 +34,7 @@ public interface FeedbackInterf {
 	public  void onClose(Exception e,String info);
 	
 	
-	/**
-	 * 获取握手信息
-	 * <br>
-	 * 返回服务器发送access
-	 * @throws IllegalWebsocketException 
-	 */
-	public void onHandshake(String access) ;
-	
-	/**
-	 * 用户验证结果
-	 * @throws VerifyWebsocketException 
-	 * @throws IllegalWebsocketException 
-	 */
-	public void onVirify(ByteBuffer msg,boolean pass) throws VerifyWebsocketException ;
+
 	
 
 }

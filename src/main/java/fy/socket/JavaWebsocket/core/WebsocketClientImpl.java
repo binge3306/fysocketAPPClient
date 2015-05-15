@@ -23,46 +23,66 @@ public class WebsocketClientImpl extends WebSocketClient {
 	
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
-	
+	/**
+	 * 握手状态
+	 */
 	private boolean hsStatus  = false;
+	/**
+	 * 用户验证状态
+	 */
 	private boolean vfStatus = false;
-	private FeedbackInterf feedbackInterf;
+	/**
+	 * 回调接口
+	 */
+	private WebsocketCoreInterf wCoreInterf;
 	/**
 	 * 待发送消息队列
 	 */
-	public  SendMsgQueue sendMsgQueue  ;
+	private  SendMsgQueue sendMsgQueue  ;
 
 
 	
-	public WebsocketClientImpl(URI serverUri, Draft draft,FeedbackInterf feedbackInterf) {
+	public WebsocketClientImpl(URI serverUri, Draft draft,WebsocketCoreInterf wCoreInterf) {
 		super(serverUri, draft);
-		this.feedbackInterf = feedbackInterf;
+		this.wCoreInterf = wCoreInterf;
 	}
 
-	public WebsocketClientImpl(URI serverURI,FeedbackInterf feedbackInterf) {
+	public WebsocketClientImpl(URI serverURI,WebsocketCoreInterf wCoreInterf) {
 		super(serverURI);
-		this.feedbackInterf = feedbackInterf;
+		this.wCoreInterf = wCoreInterf;
 	}
 
+	/**
+	 * 握手成功
+	 * <br>
+	 * 修改握手状态为true，准备用户验证
+	 */
 	@Override
 	public void onOpen(ServerHandshake handshakedata) {
-		
+		hsStatus = true;
+		wCoreInterf.onHandshake("ok");
 	}
 
 	@Override
 	public void onMessage(String message) {
-		feedbackInterf.onMessageT(message);
+		wCoreInterf.onWebsocketMessageT(message);
 	}
 
 	@Override
 	public void onClose(int code, String reason, boolean remote) {
-		feedbackInterf.onClose(new CloseWebsocketException(), "code="+code+",reason="+reason+",remote="+remote);
-		
+		wCoreInterf.onWebsocketClose(new CloseWebsocketException(), "code="+code+",reason="+reason+",remote="+remote);
 	}
 
 	@Override
 	public void onError(Exception ex) {
-		feedbackInterf.onError(ex, "java-websocket1.3 捕获异常");
+		wCoreInterf.onWebsocketError(ex, "java-websocket1.3 捕获异常");
+	}
+	
+	public void sendMsgQT(String msg){
+		
+	}
+	
+	public void sendMsgQB(){
 		
 	}
 	
