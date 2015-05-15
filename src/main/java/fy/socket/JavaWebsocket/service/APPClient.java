@@ -61,23 +61,23 @@ public class APPClient extends APPClientAbs{
 			msg = "chatroom1##0##appclient msg";
 		}
 		String msgSend = msg;
-//		while(times >= 0){
-//			times --;
+		while(times >= 0){
+			times --;
 			msgSend += " ，sendtimes= "+times;
 			
 			try {
 				logger.log(Level.INFO, "sendMsgText 调用 sendMsgText 方法,将消息插入待发送队列");
 				sendMsgText(msgSend, 0);
-//				if(timeout>0)
-//					TimeUnit.SECONDS.sleep(timeout);
+				if(timeout>0)
+					TimeUnit.SECONDS.sleep(timeout);
 			} catch (IllegalWebsocketException  e) {
 				logger.log(Level.WARNING, "IllegalWebsocketException 异常"+"  ."+e);
 			}
-//			} catch (InterruptedException e) {
-//				logger.log(Level.WARNING, "InterruptedException 异常"+"  ."+e);
-//			}
-//			msgSend = msg;
-//		}
+			 catch (InterruptedException e) {
+				logger.log(Level.WARNING, "InterruptedException 异常"+"  ."+e);
+			}
+			msgSend = msg;
+		}
 	}
 	
 
