@@ -20,9 +20,10 @@ public class StartClientMain {
 			APPClient client = new APPClient("222.201.139.159", 8877);
 			client.connection();
 			TimeUnit.SECONDS.sleep(5);
-			client.virify("user3", "verify3","homewtb");
+			client.virify("user0", "verify0","homewtb");
 			TimeUnit.SECONDS.sleep(10);
-			client.sendMsg(null,10,2);
+			//client.sendMsg(null,10,2);
+			client.sendPing(0);
 		} catch (ConnectWebsocketException   e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {

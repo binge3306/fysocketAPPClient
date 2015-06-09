@@ -116,6 +116,10 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 		}
 		
 	}
+	
+	public void sendPing(){
+		coreClient.sendPing();
+	}
 
 	@Override
 	public void close(long timeout) {

@@ -81,5 +81,9 @@ public class APPClient extends APPClientAbs{
 	}
 	
 
+	public void sendPing(int mills){
+		logger.log(Level.INFO, "发送ping片段");
+		sendPing();
+	}
 
 }
