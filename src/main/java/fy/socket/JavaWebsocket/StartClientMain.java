@@ -22,13 +22,16 @@ public class StartClientMain {
 
 		//new URI("ws://localhost:8887")
 		try {
-			APPClient client = new APPClient("222.201.139.159", 8877);
-			client.connection();
+			APPClient client = new APPClient("116.59.129.191", 8877);
+			client.connection(1);
 			TimeUnit.SECONDS.sleep(5);
+			
 			client.virify("user1", "verify1","homewtb");
+
 			TimeUnit.SECONDS.sleep(10);
 			//client.sendMsg(null,10,2);
 			BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+			
 			while(true){
 				String command = console.readLine();
 				if(command == null){
@@ -37,7 +40,7 @@ public class StartClientMain {
 					client.close(0);
 					break;
 				}else if("ping".equals(command)){
-					client.sendPing(0);
+					
 				}else {
 					client.sendMsgText(command,0);
 				}

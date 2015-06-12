@@ -81,9 +81,27 @@ public class APPClient extends APPClientAbs{
 	}
 	
 
-	public void sendPing(int mills){
-		logger.log(Level.INFO, "发送ping片段");
-		sendPing();
+	/**
+	 * 设置是否使用心跳
+	 * @param heartbeat 0 表示不使用心跳，1表示使用心跳但是使用默认心跳周期，>1 表示使用心跳，是用当前heartbeat时间为心跳周期
+	 * <br>
+	 * heartbeat 不能为负数或者小数（表示不使用心跳）
+	 */
+	public void setPing(int heartbeat){
+//		if(heartbeat == 0){
+//			logger.log(Level.INFO, "不使用心跳");	
+//		}else if(heartbeat == 1){
+//			logger.log(Level.INFO, "使用心跳，并使用默认心跳周期");
+//			sendPing( heartbeat);
+//		}else if(heartbeat > 1){
+//			logger.log(Level.INFO, "使用当前值作为心跳周期");
+//			sendPing( heartbeat);
+//		}else{
+//			logger.log(Level.INFO, "参数错误，不使用心跳");
+//		}
+		
+		
 	}
+
 
 }

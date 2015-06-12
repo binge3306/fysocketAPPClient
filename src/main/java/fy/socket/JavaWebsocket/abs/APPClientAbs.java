@@ -24,7 +24,7 @@ import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
  * @author wurunzhou
  *
  */
-public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,FeedbackInterf,WebsocketClientInterf{
+public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInterf,WebsocketClientInterf{
 
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName()); 
 	
@@ -51,10 +51,15 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 	}
 
 	@Override
-	public void connection() throws IllegalWebsocketException {
-		coreClient.connect();
+	public void connection(int heartbeat) throws IllegalWebsocketException {
+		coreClient.connect( heartbeat);
 	}
 
+	@Override
+	public void connection() throws IllegalWebsocketException {
+		coreClient.connect( 1);
+	}
+	
 	@Override
 	public void virify(String userKey, String virifyCode, String url)
 			throws IOException, ConnectWebsocketException,
@@ -117,9 +122,9 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 		
 	}
 	
-	public void sendPing(){
-		coreClient.sendPing();
-	}
+//	public void sendPing(int heartbeat){
+//		coreClient.sendPing( heartbeat);
+//	}
 
 	@Override
 	public void close(long timeout) {
@@ -157,11 +162,11 @@ public abstract class  APPClientAbs implements Runnable,WebsocketCoreInterf,Feed
 		
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		coreClient.connect();
-	}
+//	@Override
+//	public void run() {
+//		// TODO Auto-generated method stub
+//		coreClient.connect();
+//	}
 
 	/* (non-Javadoc)
 	 * @see fy.socket.JavaWebsocket.interf.FeedbackInterf#onMessageB(java.nio.ByteBuffer)

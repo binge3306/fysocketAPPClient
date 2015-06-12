@@ -16,13 +16,23 @@ import fy.socket.JavaWebsocket.exception.IllegalWebsocketException;
 public interface WebsocketClientInterf {
 
 	
+
+	/**
+	 * 连接服务器
+	 * <br>
+	 * 在风控完成之后，用户验证已经交给风控处理，则可以直接连接
+	 * @param heartbeat 设置客户端心跳周期
+	 * @throws IllegalWebsocketException
+	 */
+	public void connection(int heartbeat) throws IllegalWebsocketException;
+	
 	/**
 	 * 连接服务器
 	 * <br>
 	 * 在风控完成之后，用户验证已经交给风控处理，则可以直接连接
 	 */
 	public void connection() throws IllegalWebsocketException;
-	
+
 	/**
 	 * 验证用户
 	 * <br> 
