@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.java_websocket.exceptions.WebsocketPongResponseException;
+
 import fy.socket.JavaWebsocket.core.WebsocketClientImpl;
 import fy.socket.JavaWebsocket.core.WebsocketCoreInterf;
 import fy.socket.JavaWebsocket.exception.ConnectWebsocketException;
@@ -61,7 +63,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	}
 	
 	@Override
-	public void virify(String userKey, String virifyCode, String url)
+	public void verify(String userKey, String virifyCode, String url)
 			throws IOException, ConnectWebsocketException,
 			HandshakeWebsocketException {
 		String tag = ":app";
@@ -142,7 +144,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 		if(verifyStatus){
 			onMessageT(msg);
 		}else{
-			onVirify(msg,true);
+			onVerify(msg,true);
 		}
 		
 		
@@ -151,7 +153,12 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	@Override
 	public void onWebsocketError(Exception e, String info) {
 		//coreClient.sendMsgQueue.setPendingStatus(false);
-		onError(e,info);
+		if(e instanceof WebsocketPongResponseException){
+			onError(e,info);
+		}else{
+			onError(e,info);	
+		}
+		
 		
 	}
 
@@ -207,7 +214,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	 * @see fy.socket.JavaWebsocket.interf.FeedbackInterf#onVirify(java.nio.ByteBuffer, boolean)
 	 */
 	@Override
-	public void onVirify(String msg, boolean pass){
+	public void onVerify(String msg, boolean pass){
 		logger.log(Level.INFO,"服务器放回验证信息"+ msg);
 		if("ok".equals(msg)){
 			verifyStatus = true;

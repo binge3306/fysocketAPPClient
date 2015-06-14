@@ -22,11 +22,11 @@ public class StartClientMain {
 
 		//new URI("ws://localhost:8887")
 		try {
-			APPClient client = new APPClient("116.59.129.191", 8877);
+			APPClient client = new APPClient("222.201.139.159", 8877);
 			client.connection(1);
 			TimeUnit.SECONDS.sleep(5);
 			
-			client.virify("user1", "verify1","homewtb");
+			client.verify("user3", "verify3","homewtb");
 
 			TimeUnit.SECONDS.sleep(10);
 			//client.sendMsg(null,10,2);

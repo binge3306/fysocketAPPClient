@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
+import org.java_websocket.exceptions.WebsocketPongResponseException;
 import org.java_websocket.handshake.ServerHandshake;
 
 import fy.socket.JavaWebsocket.exception.CloseWebsocketException;
@@ -75,7 +76,13 @@ public class WebsocketClientImpl extends WebSocketClient {
 
 	@Override
 	public void onError(Exception ex) {
-		wCoreInterf.onWebsocketError(ex, "java-websocket1.3 捕获异常");
+		if(ex instanceof WebsocketPongResponseException){
+			// 如果抛出该异常说明需要重连
+			wCoreInterf.onWebsocketError(ex, "接收应答异常，尝试重连");
+		}else{
+			wCoreInterf.onWebsocketError(ex, "java-websocket1.3 捕获异常");	
+		}
+		
 	}
 	
 	public void sendMsgQT(String msg){

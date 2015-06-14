@@ -47,7 +47,7 @@ public interface WebsocketClientInterf {
 	 * @throws ConnectWebsocketException 
 	 * @throws HandshakeWebsocketException 
 	 */
-	public void virify(String userKey,String virifyCode,String url) throws IOException, ConnectWebsocketException, HandshakeWebsocketException;
+	public void verify(String userKey,String virifyCode,String url) throws IOException, ConnectWebsocketException, HandshakeWebsocketException;
 	
 	/**
 	 * 发送二进制消息

@@ -4,7 +4,7 @@
 
 	<groupId>com.fy.socket</groupId>
 	<artifactId>fysocketAPPClient</artifactId>
-	<version>3.0.1</version><!-- 基于java-websocket 从3.*开始 -->
+	<version>3.0.2</version><!-- 基于java-websocket 从3.*开始 -->
 	<packaging>jar</packaging>
 
 	<name>SocketAPPClient</name>

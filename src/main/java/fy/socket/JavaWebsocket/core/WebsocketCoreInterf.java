@@ -46,5 +46,5 @@ public interface WebsocketCoreInterf {
 	 * @throws VerifyWebsocketException 
 	 * @throws IllegalWebsocketException 
 	 */
-	public void onVirify(String msg,boolean pass) throws VerifyWebsocketException ;
+	public void onVerify(String msg,boolean pass) throws VerifyWebsocketException ;
 }

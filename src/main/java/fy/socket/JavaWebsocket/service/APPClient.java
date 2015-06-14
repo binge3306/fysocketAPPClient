@@ -12,7 +12,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.java_websocket.exceptions.WebsocketPongResponseException;
+
 import fy.socket.JavaWebsocket.abs.APPClientAbs;
+import fy.socket.JavaWebsocket.exception.ConnectWebsocketException;
+import fy.socket.JavaWebsocket.exception.HandshakeWebsocketException;
 import fy.socket.JavaWebsocket.exception.IllegalWebsocketException;
 import fy.socket.JavaWebsocket.util.ByteBufferSwap;
 import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
@@ -21,7 +25,9 @@ public class APPClient extends APPClientAbs{
 
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
-	
+	private String loginUser;
+	private String loginVerify;
+	private String HomeURL;
 	
 	public APPClient(String host,int port) throws URISyntaxException {
 		super(new URI("ws://"+host+":"+port));
@@ -44,8 +50,49 @@ public class APPClient extends APPClientAbs{
 
 	@Override
 	public void onClose(Exception e, String info) {
+		if(e instanceof WebsocketPongResponseException){
+			try {
+				reConnect();
+			} catch (IllegalWebsocketException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ConnectWebsocketException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (HandshakeWebsocketException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		logger.log(Level.INFO, "通道关闭 ="+info+"  ."+e);
 	}
+	
+	
+	@Override
+	public void connection(int heartbeat) throws IllegalWebsocketException {
+		// TODO Auto-generated method stub
+		super.connection(heartbeat);
+	}
+
+	@Override
+	public void connection() throws IllegalWebsocketException {
+		// TODO Auto-generated method stub
+		super.connection();
+	}
+
+	@Override
+	public void verify(String userKey, String virifyCode, String url)
+			throws IOException, ConnectWebsocketException,
+			HandshakeWebsocketException {
+		this.HomeURL = url;
+		this.loginUser = userKey;
+		this.loginVerify = virifyCode;
+		super.verify(userKey, virifyCode, url);
+	}
+
 	/**
 	 * 添加的测试方法
 	 * @param msg		消息内容	默认内容："20840##0##appclient msg";
@@ -101,6 +148,11 @@ public class APPClient extends APPClientAbs{
 //		}
 		
 		
+	}
+	
+	private void reConnect() throws IllegalWebsocketException, ConnectWebsocketException, HandshakeWebsocketException, IOException{
+		connection(1);
+		verify(loginUser, loginVerify, HomeURL);
 	}
 
 
