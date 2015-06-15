@@ -39,8 +39,8 @@ public class StartClientMain {
 				}else if("bye".equals(command)){
 					client.close(0);
 					break;
-				}else if("ping".equals(command)){
-					
+				}else if("hello".equals(command)){
+					client.sendMsgText("chatroom1##1##content:hello,senderAccount\":\"user1\",\"chatview:chatroom1",0);
 				}else {
 					client.sendMsgText(command,0);
 				}
