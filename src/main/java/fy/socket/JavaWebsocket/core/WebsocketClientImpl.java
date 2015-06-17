@@ -71,6 +71,9 @@ public class WebsocketClientImpl extends WebSocketClient {
 
 	@Override
 	public void onClose(int code, String reason, boolean remote) {
+		hsStatus = false;
+		vfStatus = false;
+		closeConnection(code, reason);
 		wCoreInterf.onWebsocketClose(new CloseWebsocketException(), "code="+code+",reason="+reason+",remote="+remote);
 	}
 
@@ -93,12 +96,4 @@ public class WebsocketClientImpl extends WebSocketClient {
 		
 	}
 	
-	class WriteThread implements Runnable{
-
-		@Override
-		public void run() {
-			
-		}
-		
-	} 
 }

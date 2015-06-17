@@ -48,12 +48,23 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	 */
 	private boolean verifyStatus = false;
 	
+	private String loginUser;
+	private String loginVerify;
+	private String HomeURL;
+
+	
+	private URI url;
+	
 	public APPClientAbs(URI url){
-		this.coreClient = new WebsocketClientImpl(url,this);
+		this.url = url;
 	}
 
 	@Override
 	public void connection(int heartbeat) throws IllegalWebsocketException {
+		if(coreClient == null){
+			System.out.println("new coreclient,url:"+url);
+			coreClient = new WebsocketClientImpl(url,this);
+		}
 		coreClient.connect( heartbeat);
 	}
 
@@ -66,6 +77,9 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	public void verify(String userKey, String virifyCode, String url)
 			throws IOException, ConnectWebsocketException,
 			HandshakeWebsocketException {
+		this.HomeURL = url;
+		this.loginUser = userKey;
+		this.loginVerify = virifyCode;
 		String tag = ":app";
 		url = "app"+url;
 		logger.log(Level.INFO, "发送用户验证消息");
@@ -131,6 +145,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	@Override
 	public void close(long timeout) {
 		coreClient.close();
+		coreClient = null;
 	}
 
 	@Override
@@ -153,8 +168,25 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	@Override
 	public void onWebsocketError(Exception e, String info) {
 		//coreClient.sendMsgQueue.setPendingStatus(false);
-		if(e instanceof WebsocketPongResponseException){
-			onError(e,info);
+		if(info.contains("重连")&&e instanceof WebsocketPongResponseException){
+			logger.log(Level.WARNING, "连接失效异常:"+info+" ."+e);
+			logger.log(Level.INFO, "准备重连……");
+			try {
+				TimeUnit.SECONDS.sleep(5);
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
+			}
+			try {
+				reConnect();
+			} catch (IllegalWebsocketException e1) {
+				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
+			} catch (ConnectWebsocketException e1) {
+				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
+			} catch (HandshakeWebsocketException e1) {
+				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
+			} catch (IOException e1) {
+				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
+			}
 		}else{
 			onError(e,info);	
 		}
@@ -224,5 +256,23 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 		}
 		
 	}
-	
+	/**
+	 * 重启连接
+	 * @throws IllegalWebsocketException
+	 * @throws ConnectWebsocketException
+	 * @throws HandshakeWebsocketException
+	 * @throws IOException
+	 * @throws InterruptedException 
+	 */
+	protected void reConnect() throws IllegalWebsocketException, ConnectWebsocketException, HandshakeWebsocketException, IOException{
+		coreClient.close();
+		coreClient = null;
+		connection(1);
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		verify(loginUser, loginVerify, HomeURL);
+	}
 }

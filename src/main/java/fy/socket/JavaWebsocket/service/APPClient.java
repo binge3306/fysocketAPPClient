@@ -1,6 +1,7 @@
 package fy.socket.JavaWebsocket.service;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -25,9 +26,6 @@ public class APPClient extends APPClientAbs{
 
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
-	private String loginUser;
-	private String loginVerify;
-	private String HomeURL;
 	
 	public APPClient(String host,int port) throws URISyntaxException {
 		super(new URI("ws://"+host+":"+port));
@@ -45,41 +43,44 @@ public class APPClient extends APPClientAbs{
 
 	@Override
 	public void onError(Exception e, String info) {
-		logger.log(Level.INFO, "异常:"+info+" ."+e);
+		
+			logger.log(Level.SEVERE, "异常:"+info+" ."+e);
+	
+		
 	}
 
 	@Override
 	public void onClose(Exception e, String info) {
-		if(e instanceof WebsocketPongResponseException){
+		if(info.contains("重连")&&e instanceof WebsocketPongResponseException){
+			logger.log(Level.WARNING, "连接失效异常:"+info+" ."+e);
+			logger.log(Level.INFO, "准备重连");
 			try {
 				reConnect();
 			} catch (IllegalWebsocketException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
 			} catch (ConnectWebsocketException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
 			} catch (HandshakeWebsocketException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
 			}
+		}else if(e instanceof SocketException){
+			
+		}else{
+			logger.log(Level.INFO, "通道关闭 ="+info+"  ."+e);	
 		}
-		logger.log(Level.INFO, "通道关闭 ="+info+"  ."+e);
+		
 	}
 	
 	
 	@Override
 	public void connection(int heartbeat) throws IllegalWebsocketException {
-		// TODO Auto-generated method stub
 		super.connection(heartbeat);
 	}
 
 	@Override
 	public void connection() throws IllegalWebsocketException {
-		// TODO Auto-generated method stub
 		super.connection();
 	}
 
@@ -87,9 +88,7 @@ public class APPClient extends APPClientAbs{
 	public void verify(String userKey, String virifyCode, String url)
 			throws IOException, ConnectWebsocketException,
 			HandshakeWebsocketException {
-		this.HomeURL = url;
-		this.loginUser = userKey;
-		this.loginVerify = virifyCode;
+
 		super.verify(userKey, virifyCode, url);
 	}
 
@@ -150,10 +149,7 @@ public class APPClient extends APPClientAbs{
 		
 	}
 	
-	private void reConnect() throws IllegalWebsocketException, ConnectWebsocketException, HandshakeWebsocketException, IOException{
-		connection(1);
-		verify(loginUser, loginVerify, HomeURL);
-	}
+
 
 
 }

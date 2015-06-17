@@ -40,7 +40,7 @@ public class StartClientMain {
 					client.close(0);
 					break;
 				}else if("hello".equals(command)){
-					client.sendMsgText("chatroom1##1##content:hello,senderAccount\":\"user1\",\"chatview:chatroom1",0);
+					client.sendMsgText("chatroom1##1##content:hello,senderAccount\":\"user3\",\"chatview:chatroom1",0);
 				}else {
 					client.sendMsgText(command,0);
 				}
