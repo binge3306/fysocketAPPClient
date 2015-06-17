@@ -23,7 +23,6 @@ import fy.socket.JavaWebsocket.util.ByteBufferSwap;
 import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
 
 public class APPClient extends APPClientAbs{
-
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
 	
