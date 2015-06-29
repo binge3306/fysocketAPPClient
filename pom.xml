@@ -89,10 +89,11 @@
 			<artifactId>netty-all</artifactId>
 			<version>4.0.26.Final</version>
 		</dependency> -->
+
 		<dependency>
-			<groupId>org.java-websocket</groupId>
-			<artifactId>java-WebSocket</artifactId>
-			<version>2.0.4</version>
+			<groupId>com.fy.socket</groupId>
+			<artifactId>fysockett</artifactId>
+			<version>2.0.4</version><!-- 为fy 新编译版本 -->
 		</dependency>
 	</dependencies>
 </project>
