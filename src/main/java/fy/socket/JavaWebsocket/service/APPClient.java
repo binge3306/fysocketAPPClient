@@ -20,7 +20,8 @@ import fy.socket.JavaWebsocket.exception.ConnectWebsocketException;
 import fy.socket.JavaWebsocket.exception.HandshakeWebsocketException;
 import fy.socket.JavaWebsocket.exception.IllegalWebsocketException;
 import fy.socket.JavaWebsocket.util.ByteBufferSwap;
-import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
+
+import org.java_websocket.util.logger.LoggerUtil;
 
 public class APPClient extends APPClientAbs{
 	

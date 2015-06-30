@@ -12,8 +12,7 @@ import fy.socket.JavaWebsocket.exception.CloseWebsocketException;
 import fy.socket.JavaWebsocket.interf.FeedbackInterf;
 import fy.socket.JavaWebsocket.util.ReceiveMsgQueue;
 import fy.socket.JavaWebsocket.util.SendMsgQueue;
-import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
-
+import org.java_websocket.util.logger.LoggerUtil;
 
 /**
  * @author Bryan-zhou
