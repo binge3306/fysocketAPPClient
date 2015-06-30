@@ -28,7 +28,15 @@ import fy.socket.JavaWebsocket.util.ByteBufferSwap;
  */
 public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInterf,WebsocketClientInterf{
 
+	/**
+	 * 日志
+	 */
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName()); 
+	
+	/**
+	 * 真正生产环境不需要，只是用来
+	 */
+	private int USERID;
 	
 	/**
 	 * java-websocket 连接核心
@@ -58,19 +66,24 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	public APPClientAbs(URI url){
 		this.url = url;
 	}
+	
+	public APPClientAbs(URI url,int userid){
+		this.url = url;
+		this.USERID = userid;
+	}
 
 	@Override
 	public void connection(int heartbeat) throws IllegalWebsocketException {
 		if(coreClient == null){
-			System.out.println("new coreclient,url:"+url);
-			coreClient = new WebsocketClientImpl(url,this);
+			logger.log(Level.INFO,"new coreclient,url:"+url);
+			coreClient = new WebsocketClientImpl(url,this,USERID);
 		}
 		coreClient.connect( heartbeat);
 	}
 
 	@Override
 	public void connection() throws IllegalWebsocketException {
-		coreClient.connect( 1);
+		connection( 0);
 	}
 	
 	@Override
@@ -286,12 +299,12 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 		coreClient.close();
 		coreClient = null;
 		try {
-			System.out.println("11111111");
+			logger.log(Level.INFO,"11111111");
 			TimeUnit.SECONDS.sleep(20);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("2222222222222");
+		logger.log(Level.INFO,"2222222222222");
 		connection(1);
 		try {
 			TimeUnit.SECONDS.sleep(5);

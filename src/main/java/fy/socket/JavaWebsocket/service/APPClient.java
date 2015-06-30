@@ -31,6 +31,10 @@ public class APPClient extends APPClientAbs{
 		super(new URI("ws://"+host+":"+port));
 	}
 
+	public APPClient(String host,int port,int userid) throws URISyntaxException {
+		super(new URI("ws://"+host+":"+port),userid);
+	}
+	
 	@Override
 	public void onMessageB(ByteBuffer msg) {
 		logger.log(Level.INFO, "收到一条二进制消息");
@@ -38,7 +42,8 @@ public class APPClient extends APPClientAbs{
 
 	@Override
 	public void onMessageT(String msg) {
-		logger.log(Level.INFO, "收到一条文本消息"+msg);
+		logger.log(Level.INFO,Thread.currentThread().getName()+" got: " + msg  );
+		//logger.log(Level.INFO, "收到一条文本消息"+msg);
 	}
 
 	@Override

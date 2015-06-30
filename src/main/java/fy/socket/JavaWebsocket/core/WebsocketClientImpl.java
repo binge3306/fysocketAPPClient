@@ -41,6 +41,7 @@ public class WebsocketClientImpl extends WebSocketClient {
 	private  SendMsgQueue sendMsgQueue  ;
 
 
+	private int USERID;
 	
 	public WebsocketClientImpl(URI serverUri, Draft draft,WebsocketCoreInterf wCoreInterf) {
 		super(serverUri, draft);
@@ -51,6 +52,13 @@ public class WebsocketClientImpl extends WebSocketClient {
 		super(serverURI);
 		this.wCoreInterf = wCoreInterf;
 	}
+
+	public WebsocketClientImpl(URI url, WebsocketCoreInterf wCoreInterf, int uSERID2) {
+		super(url,uSERID2);
+		this.wCoreInterf = wCoreInterf;
+	}
+
+
 
 	/**
 	 * 握手成功
