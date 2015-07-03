@@ -57,19 +57,19 @@ public class APPClient extends APPClientAbs{
 	@Override
 	public void onClose(Exception e, String info) {
 		if(info.contains("重连")&&e instanceof WebsocketPongResponseException){
-			logger.log(Level.WARNING, "连接失效异常:"+info+" ."+e);
-			logger.log(Level.INFO, "准备重连");
-			try {
-				reConnect();
-			} catch (IllegalWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (ConnectWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (HandshakeWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (IOException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			}
+//			logger.log(Level.WARNING, "连接失效异常:"+info+" ."+e);
+//			logger.log(Level.INFO, "准备重连");
+//			try {
+//				//reConnect();
+//			} catch (IllegalWebsocketException e1) {
+//				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
+//			} catch (ConnectWebsocketException e1) {
+//				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
+//			} catch (HandshakeWebsocketException e1) {
+//				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
+//			} catch (IOException e1) {
+//				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
+//			}
 		}else if(e instanceof SocketException){
 			
 		}else{

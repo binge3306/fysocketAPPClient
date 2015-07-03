@@ -189,8 +189,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			} catch (InterruptedException e2) {
 				e2.printStackTrace();
 			}
-			new Thread(new ReconnectThread()).start();
-
+			
 		}else{
 			onError(e,info);	
 		}
@@ -261,56 +260,5 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 		
 	}
 	
-	/**
-	 * 重连线程
-	 * 
-	 * @author wusir
-	 *
-	 */
-	private class ReconnectThread implements Runnable{
 
-		@Override
-		public void run() {
-
-			Thread.currentThread().setName("ReconnectThread");
-			try {
-				reConnect();
-			} catch (IllegalWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (ConnectWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (HandshakeWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (IOException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			}
-		}
-		
-	}
-	/**
-	 * 重启连接
-	 * @throws IllegalWebsocketException
-	 * @throws ConnectWebsocketException
-	 * @throws HandshakeWebsocketException
-	 * @throws IOException
-	 * @throws InterruptedException 
-	 */
-	protected void reConnect() throws IllegalWebsocketException, ConnectWebsocketException, HandshakeWebsocketException, IOException{
-		coreClient.close();
-		coreClient = null;
-		try {
-			logger.log(Level.INFO,"11111111");
-			TimeUnit.SECONDS.sleep(20);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		logger.log(Level.INFO,"2222222222222");
-		connection(1);
-		try {
-			TimeUnit.SECONDS.sleep(5);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		verify(loginUser, loginVerify, HomeURL);
-	}
 }
