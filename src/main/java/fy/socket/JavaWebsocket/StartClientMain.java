@@ -24,11 +24,11 @@ public class StartClientMain {
 		try {
 			APPClient client = new APPClient("222.201.139.159", 8877);
 			client.connection(1);
-			TimeUnit.SECONDS.sleep(5);
+			//TimeUnit.SECONDS.sleep(5);
 			
 			client.verify("user3", "verify3","homewtb");
 
-			TimeUnit.SECONDS.sleep(10);
+			//TimeUnit.SECONDS.sleep(10);
 			//client.sendMsg(null,10,2);
 			BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 			
@@ -42,7 +42,7 @@ public class StartClientMain {
 				}else if("hello".equals(command)){
 					client.sendMsgText("chatroom1##1##content:hello,senderAccount\":\"user3\",\"chatview:chatroom1",0);
 				}else {
-					client.sendMsgText(command,0);
+					client.sendMsgText("chatroom1##1##content:"+command+",senderAccount\":\"user3\",\"chatview:chatroom1",0);
 				}
 			}
 			

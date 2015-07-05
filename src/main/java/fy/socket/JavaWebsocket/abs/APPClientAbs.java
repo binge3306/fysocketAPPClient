@@ -26,7 +26,7 @@ import fy.socket.JavaWebsocket.util.ByteBufferSwap;
  * @author wurunzhou
  *
  */
-public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInterf,WebsocketClientInterf{
+public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInterf{
 
 	/**
 	 * 日志
@@ -72,24 +72,21 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 		this.USERID = userid;
 	}
 
-	@Override
 	public void connection(int heartbeat) throws IllegalWebsocketException {
 		if(coreClient == null){
 			logger.log(Level.INFO,"new coreclient,url:"+url);
 			coreClient = new WebsocketClientImpl(url,this,USERID);
 		}
-		coreClient.connect( heartbeat);
+		coreClient.connection( heartbeat);
 	}
 
-	@Override
 	public void connection() throws IllegalWebsocketException {
 		connection( 0);
 	}
 	
-	@Override
 	public void verify(String userKey, String virifyCode, String url)
 			throws IOException, ConnectWebsocketException,
-			HandshakeWebsocketException {
+			HandshakeWebsocketException, InterruptedException {
 		this.HomeURL = url;
 		this.loginUser = userKey;
 		this.loginVerify = virifyCode;
@@ -107,7 +104,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			if(htime++>5) break;
 		}
 		if(handshakeStatus){
-			coreClient.send(userKey+":"+virifyCode+":"+url+tag);
+			coreClient.verify(userKey,virifyCode,url+tag);
 		}else {
 			// 如果五秒之后 ，还是没有握手成功，那就等着验证用户抛出异常吧
 			logger.log(Level.INFO,"五秒之后 ，还是没有握手成功，那就让验证用户抛出异常吧");
@@ -115,23 +112,22 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 		}
 	}
 
-	@Override
 	public void sendMsgBinary(ByteBuffer msg, long timeout) {
-		byte[] data = ByteBufferSwap.byteBufferToByte(msg);
-		coreClient.send(data);
+		
+		coreClient.sendMsgBinary( msg,timeout);
 	}
 
-	@Override
 	public void sendMsgBinary(List<ByteBuffer> msg, long timeout) {
-		for(ByteBuffer bB : msg){
-			byte[] data = ByteBufferSwap.byteBufferToByte(bB);
-			coreClient.send(data);
-		}
+
+			coreClient.sendMsgBinary(msg,  timeout);
+		
 	}
 
-	@Override
 	public void sendMsgText(String msg, long timeout)
-			throws IllegalWebsocketException {
+			throws IllegalWebsocketException, InterruptedException {
+		
+		coreClient.sendMsgText(msg,  timeout);
+		/*
 		int htime = 0;
 		while(!verifyStatus){
 			try {
@@ -149,15 +145,14 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			throw new  IllegalWebsocketException();
 		}
 		
-	}
+	*/}
 	
 //	public void sendPing(int heartbeat){
 //		coreClient.sendPing( heartbeat);
 //	}
 
-	@Override
 	public void close(long timeout) {
-		coreClient.close();
+		coreClient.close(0);
 		coreClient = null;
 	}
 
@@ -189,7 +184,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			} catch (InterruptedException e2) {
 				e2.printStackTrace();
 			}
-			new Thread(new ReconnectThread()).start();
+//			new Thread(new ReconnectThread()).start();
 
 		}else{
 			onError(e,info);	
@@ -260,57 +255,6 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 		}
 		
 	}
-	
-	/**
-	 * 重连线程
-	 * 
-	 * @author wusir
-	 *
-	 */
-	private class ReconnectThread implements Runnable{
 
-		@Override
-		public void run() {
 
-			Thread.currentThread().setName("ReconnectThread");
-			try {
-				reConnect();
-			} catch (IllegalWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (ConnectWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (HandshakeWebsocketException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			} catch (IOException e1) {
-				logger.log(Level.WARNING, "重连异常:"+" ."+e1);
-			}
-		}
-		
-	}
-	/**
-	 * 重启连接
-	 * @throws IllegalWebsocketException
-	 * @throws ConnectWebsocketException
-	 * @throws HandshakeWebsocketException
-	 * @throws IOException
-	 * @throws InterruptedException 
-	 */
-	protected void reConnect() throws IllegalWebsocketException, ConnectWebsocketException, HandshakeWebsocketException, IOException{
-		coreClient.close();
-		coreClient = null;
-		try {
-			logger.log(Level.INFO,"11111111");
-			TimeUnit.SECONDS.sleep(20);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		logger.log(Level.INFO,"2222222222222");
-		connection(1);
-		try {
-			TimeUnit.SECONDS.sleep(5);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		verify(loginUser, loginVerify, HomeURL);
-	}
 }

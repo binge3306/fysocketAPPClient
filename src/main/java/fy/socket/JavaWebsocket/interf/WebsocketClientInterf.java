@@ -46,8 +46,9 @@ public interface WebsocketClientInterf {
 	 * @throws IOException 
 	 * @throws ConnectWebsocketException 
 	 * @throws HandshakeWebsocketException 
+	 * @throws InterruptedException 
 	 */
-	public void verify(String userKey,String virifyCode,String url) throws IOException, ConnectWebsocketException, HandshakeWebsocketException;
+	public void verify(String userKey,String virifyCode,String url) throws IOException, ConnectWebsocketException, HandshakeWebsocketException, InterruptedException;
 	
 	/**
 	 * 发送二进制消息
@@ -76,8 +77,9 @@ public interface WebsocketClientInterf {
 	 * @param msg 文本消息内容
 	 * @param timeout 最长阻塞时间，如果超过该阻塞时间取消发送
 	 * @throws IllegalWebsocketException 非法操作异常，表示待发送队列已经不再接收消息
+	 * @throws InterruptedException 
 	 */
-	public void sendMsgText(String msg,long timeout) throws IllegalWebsocketException;
+	public void sendMsgText(String msg,long timeout) throws IllegalWebsocketException, InterruptedException;
 
 
 	/**
