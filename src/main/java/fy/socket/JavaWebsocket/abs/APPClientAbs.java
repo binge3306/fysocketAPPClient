@@ -110,13 +110,13 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			} catch (InterruptedException e) {
 				logger.log(Level.SEVERE,"error 异常"+e.toString());
 			}
-			if(htime++>8) break;
+			if(htime++>15) break;
 		}
 		if(handshakeStatus){
 			coreClient.verify(userKey,virifyCode,url+tag);
 		}else {
 			// 如果五秒之后 ，还是没有握手成功，那就等着验证用户抛出异常吧
-			logger.log(Level.INFO,"五秒之后 ，还是没有握手成功，那就让验证用户抛出异常吧");
+			logger.log(Level.INFO,"15秒之后 ，还是没有握手成功，那就让验证用户抛出异常吧");
 			throw new  HandshakeWebsocketException();
 		}
 	}
@@ -135,29 +135,26 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	public void sendMsgText(String msg, long timeout)
 			throws IllegalWebsocketException, InterruptedException {
 		
-		// 标记发送时间
-		delayTime.put(new Date());
-		coreClient.sendMsgText(msg,  timeout);
-		
-		/*
 		int htime = 0;
 		while(!verifyStatus){
 			try {
 				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE,"error 异常"+e.toString());
 			}
-			if(htime++>5) break;
+			if(htime++>15) break;
 		}
 		if(verifyStatus){
-			coreClient.send(msg);
+			// 标记发送时间
+			delayTime.put(new Date());
+			coreClient.sendMsgText(msg,  timeout);
 		}else {
 			// 如果五秒之后 ，还是没有握手成功，那就等着验证用户抛出异常吧
-			logger.log(Level.INFO,"五秒之后 ，还是没有验证成功，那就抛出异常吧");
+			logger.log(Level.INFO,"15秒之后 ，还是没有验证成功，那就抛出异常吧");
 			throw new  IllegalWebsocketException();
 		}
 		
-	*/}
+	}
 	
 //	public void sendPing(int heartbeat){
 //		coreClient.sendPing( heartbeat);
