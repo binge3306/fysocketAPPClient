@@ -60,6 +60,7 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
     private WebsocketCoreInterf wCoreInterf;
     public WebSocketClientHandler(WebsocketCoreInterf wCoreInterf,WebSocketClientHandshaker handshaker) {
         this.handshaker = handshaker;
+        this.wCoreInterf = wCoreInterf;
     }
 
     public ChannelFuture handshakeFuture() {

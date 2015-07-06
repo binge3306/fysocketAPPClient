@@ -3,12 +3,16 @@ package fy.socket.JavaWebsocket.abs;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.java_websocket.exceptions.ExceptionErrorCode;
+import org.java_websocket.exceptions.InvalidDataException;
 import org.java_websocket.exceptions.WebsocketPongResponseException;
+import org.java_websocket.util.TimeQueue;
 import org.java_websocket.util.logger.LoggerUtil;
 
 import fy.socket.JavaWebsocket.core.WebsocketClientImpl;
@@ -60,6 +64,10 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	private String loginVerify;
 	private String HomeURL;
 
+	/**
+	 * 用来计算消息延时
+	 */
+	private TimeQueue delayTime;
 	
 	private URI url;
 	
@@ -78,6 +86,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			coreClient = new WebsocketClientImpl(url,this,USERID);
 		}
 		coreClient.connection( heartbeat);
+		delayTime = new TimeQueue();
 	}
 
 	public void connection() throws IllegalWebsocketException {
@@ -127,6 +136,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			throws IllegalWebsocketException, InterruptedException {
 		
 		coreClient.sendMsgText(msg,  timeout);
+		delayTime.put(new Date());
 		/*
 		int htime = 0;
 		while(!verifyStatus){
@@ -165,12 +175,18 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	@Override
 	public void onWebsocketMessageT(String msg)   {
 		if(verifyStatus){
+			delayTime();
 			onMessageT(msg);
 		}else{
 			onVerify(msg,true);
 		}
 		
 		
+	}
+	private void delayTime(){
+		Date date1 = delayTime.get();
+		long times = new Date().getTime()-date1.getTime();
+		logger.log(Level.INFO,Thread.currentThread().getName()+" 消息延时时间 "+times  +" (毫秒)");
 	}
 
 	@Override

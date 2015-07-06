@@ -24,11 +24,19 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
+
+
+
 
 
 
@@ -46,6 +54,7 @@ import java.util.logging.Logger;
 
 import javax.net.ssl.SSLException;
 
+import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.util.logger.LoggerUtil;
@@ -62,7 +71,7 @@ public class WebsocketClientImpl  implements Runnable,WebsocketClientInterf{
 	
 	private Thread  workThread;
 	
-	static final String URL = System.getProperty("url", "ws://127.0.0.1:8877");
+	private  String URL;//System.getProperty("url", "ws://127.0.0.1:8877");
 	  
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
 	/**
@@ -88,6 +97,8 @@ public class WebsocketClientImpl  implements Runnable,WebsocketClientInterf{
 	public WebsocketClientImpl(URI serverUri, Draft draft,WebsocketCoreInterf wCoreInterf) {
 //		super(serverUri, draft);
 		this.wCoreInterf = wCoreInterf;
+		this.URL = System.getProperty( "URL","ws://"+serverUri.getHost()+":"+ getPort(serverUri)) ;
+		//this.URL = serverUri;
 	}
 
 	public WebsocketClientImpl(URI serverURI,WebsocketCoreInterf wCoreInterf) {
@@ -98,15 +109,21 @@ public class WebsocketClientImpl  implements Runnable,WebsocketClientInterf{
 	public WebsocketClientImpl(URI url, WebsocketCoreInterf wCoreInterf, int uSERID2) {
 //		super(url,uSERID2);
 		this.wCoreInterf = wCoreInterf;
+		this.URL = System.getProperty( "URL","ws://"+url.getHost()+":"+ getPort(url)) ;
+		this.USERID = uSERID2;
+
 	}
 	
 	private EventLoopGroup group;
 
 	private Channel ch;
+	
 	@Override
 	public void run() {
 
+		Thread.currentThread().setName("workReceiveThread" +USERID);
 		try {
+			
 			URI uri = new URI(URL);
 
 			String scheme = uri.getScheme() == null ? "http" : uri.getScheme();
@@ -140,6 +157,7 @@ public class WebsocketClientImpl  implements Runnable,WebsocketClientInterf{
 				sslCtx = null;
 			}
 
+		
 			 group = new NioEventLoopGroup();
 
 			// Connect with V13 (RFC 6455 aka HyBi-17). You can change it to V08
@@ -172,14 +190,11 @@ public class WebsocketClientImpl  implements Runnable,WebsocketClientInterf{
 			handler.handshakeFuture().sync();
 
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "异常" + e.toString());
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "异常" + e.toString());
 		} catch (SSLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "异常" + e.toString());
 		} finally {
 
 		}
@@ -248,8 +263,19 @@ public class WebsocketClientImpl  implements Runnable,WebsocketClientInterf{
 	}
 
 
-	
-
-
+	private int getPort(URI uri) {
+		int port = uri.getPort();
+		if( port == -1 ) {
+			String scheme = uri.getScheme();
+			if( scheme.equals( "wss" ) ) {
+				return WebSocket.DEFAULT_WSS_PORT;
+			} else if( scheme.equals( "ws" ) ) {
+				return WebSocket.DEFAULT_PORT;
+			} else {
+				throw new RuntimeException( "unkonow scheme" + scheme );
+			}
+		}
+		return port;
+	}
 	
 }
