@@ -1,5 +1,9 @@
 package fy.socket.JavaWebsocket.util;
 
+import java.util.logging.Logger;
+
+import org.java_websocket.util.logger.LoggerUtil;
+
 /**
  * <p>Encodes and decodes to and from Base64 notation.</p>
  * <p>Homepage: <a href="http://iharder.net/base64">http://iharder.net/base64</a>.</p>
@@ -1282,7 +1286,7 @@ public class Base64
 
                 }   // end try
                 catch( java.io.IOException e ) {
-                    e.printStackTrace();
+                    e.printStackTrace();//private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
                     // Just return originally-decoded bytes
                 }   // end catch
                 finally {

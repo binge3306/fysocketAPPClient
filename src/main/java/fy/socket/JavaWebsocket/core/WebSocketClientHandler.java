@@ -37,6 +37,11 @@
 
 package fy.socket.JavaWebsocket.core;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.java_websocket.util.logger.LoggerUtil;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -52,9 +57,9 @@ import io.netty.util.CharsetUtil;
 
 public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
-	
-	
-    private final WebSocketClientHandshaker handshaker;
+	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
+
+	private final WebSocketClientHandshaker handshaker;
     private ChannelPromise handshakeFuture;
 
     private WebsocketCoreInterf wCoreInterf;
@@ -89,6 +94,7 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
             handshaker.finishHandshake(ch, (FullHttpResponse) msg);
             System.out.println("WebSocket Client connected!");
             handshakeFuture.setSuccess();
+            logger.log(Level.INFO,"startHandshake");
             wCoreInterf.onHandshake("Handshake");
             return;
         }

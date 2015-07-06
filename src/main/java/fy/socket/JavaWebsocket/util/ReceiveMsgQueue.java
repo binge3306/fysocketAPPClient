@@ -87,7 +87,7 @@ public class ReceiveMsgQueue {
 				space.signalAll();
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE,"error 异常"+e.toString());
 		} finally {
 			lock.unlock();
 		}

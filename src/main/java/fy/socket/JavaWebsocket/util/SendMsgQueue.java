@@ -61,7 +61,7 @@ public class SendMsgQueue {
 					.getName() + " Inserted mes num: "+ msgQ.size());
 			lines.signalAll();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE,"error 异常"+e.toString());
 		} finally {
 			lock.unlock();
 		}
@@ -85,7 +85,7 @@ public class SendMsgQueue {
 				space.signalAll();
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE,"error 异常"+e.toString());
 		} finally {
 			lock.unlock();
 		}

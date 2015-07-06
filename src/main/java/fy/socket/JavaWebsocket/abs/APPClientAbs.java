@@ -108,7 +108,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			try {
 				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE,"error 异常"+e.toString());
 			}
 			if(htime++>5) break;
 		}
@@ -135,8 +135,10 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 	public void sendMsgText(String msg, long timeout)
 			throws IllegalWebsocketException, InterruptedException {
 		
-		coreClient.sendMsgText(msg,  timeout);
+		// 标记发送时间
 		delayTime.put(new Date());
+		coreClient.sendMsgText(msg,  timeout);
+		
 		/*
 		int htime = 0;
 		while(!verifyStatus){
