@@ -40,6 +40,7 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This is an example of a WebSocket client.
@@ -54,7 +55,8 @@ import java.net.URI;
  * You don't have to specify any arguments if you want to connect to the example WebSocket server,
  * as this is the default.
  */
-//public final class WebSocketClient {
+public final class WebSocketClient {
+
 //
 //    static final String URL = System.getProperty("url", "ws://127.0.0.1:8877");
 //
@@ -139,4 +141,4 @@ import java.net.URI;
 //            group.shutdownGracefully();
 //        }
 //    }
-//}
+}
