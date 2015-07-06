@@ -110,7 +110,7 @@ public abstract class  APPClientAbs implements WebsocketCoreInterf,FeedbackInter
 			} catch (InterruptedException e) {
 				logger.log(Level.SEVERE,"error 异常"+e.toString());
 			}
-			if(htime++>5) break;
+			if(htime++>8) break;
 		}
 		if(handshakeStatus){
 			coreClient.verify(userKey,virifyCode,url+tag);
