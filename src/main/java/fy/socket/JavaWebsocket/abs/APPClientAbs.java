@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import org.java_websocket.exceptions.ExceptionErrorCode;
 import org.java_websocket.exceptions.InvalidDataException;
 import org.java_websocket.exceptions.WebsocketPongResponseException;
-import org.java_websocket.util.TimeQueue;
 import org.java_websocket.util.logger.LoggerUtil;
 
 import fy.socket.JavaWebsocket.core.WebsocketClientImpl;
@@ -24,6 +23,7 @@ import fy.socket.JavaWebsocket.exception.VerifyWebsocketException;
 import fy.socket.JavaWebsocket.interf.FeedbackInterf;
 import fy.socket.JavaWebsocket.interf.WebsocketClientInterf;
 import fy.socket.JavaWebsocket.util.ByteBufferSwap;
+import fy.socket.JavaWebsocket.util.TimeQueue;
 
 /**
  * 
