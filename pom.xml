@@ -4,7 +4,8 @@
 
 	<groupId>com.fy.socket</groupId>
 	<artifactId>fysocketAPPClient</artifactId>
-	<version>3.0.2</version><!-- 基于java-websocket 从3.*开始 -->
+	<version>3.0.2</version>
+	<!-- 基于java-websocket 从3.*开始 -->
 	<!--  添加心跳 升级版本到3.0.3 -->
 	<packaging>jar</packaging>
 
@@ -92,8 +93,9 @@
 
 		<dependency>
 			<groupId>com.fy.socket</groupId>
-			<artifactId>fysockett</artifactId>
-			<version>2.0.4</version><!-- 为fy 新编译版本 -->
+			<artifactId>fysocket</artifactId>
+			<version>2.0.5</version>
+			<!-- 为fy 新编译版本 -->
 		</dependency>
 	</dependencies>
 </project>
